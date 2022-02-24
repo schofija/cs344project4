@@ -13,7 +13,7 @@ contains functions for each thread
 #include "buffers.h"
 
 unsigned int stop_flag = 0;
-unsigned int stop_idx = 0;
+const unsigned char soh = 1;
 
 /* Called within input thread */
 char* get_user_input()
@@ -33,14 +33,15 @@ char* get_user_input()
 /* Input thread */
 void* get_input(void *args)
 {
+	char stop_chr[1] = {soh};
     for(int i = 0; i < BUFFER_NUM_ITEMS; i++)
     {
       // Get the user input
       char* item = get_user_input();
 	  if(strcmp(item, "STOP\n") == 0)
 	  {
-			printf("stop flag set!\n");
 			stop_flag = 1; /* Setting the global stop flag */
+			put_buff_1(stop_chr);
 			return NULL;
 	  }
       put_buff_1(item);
@@ -56,15 +57,23 @@ void *line_separator(void *args)
 	unsigned int max_idx = BUFFER_NUM_ITEMS;
     for (int i = 0; i < max_idx; i++) //for (int i = 0; i < BUFFER_NUM_ITEMS; i++)
     {
-      item = get_buff_1();
+		item = get_buff_1();
+		
+		if(item[0] == soh) /* If item contains the 'soh' value */
+		{
+			put_buff_2(item); /* Pass it forward */
+			return NULL; /* Exit out of thread */
+		}
 	  
-	  for(int j = 0; j < BUFFER_ITEM_SIZE; j++)
-	  {
-		  if(item[j] == '\n') /* Converting newline character to space */
-			  item[j] == ' ';
-	  }
-	 
-		put_buff_2(item);
+		else
+		{
+			for(int j = 0; j < BUFFER_ITEM_SIZE; j++)
+			{
+			  if(item[j] == '\n') /* Converting newline character to space */
+				  item[j] == ' ';
+			}
+			put_buff_2(item);
+		}
     }
     return NULL;
 }
@@ -77,15 +86,24 @@ void* plusplus_to_carrot(void* args)
     {
       item = get_buff_2();
 	  
-	  for(int j = 0; j < strlen(item) - 1; j++)
-	  {
-		if(item[j] == '+' && item[j+1] == '+') /* If current item[j] is a +, and the next one is aswell...*/
+		if(item[0] == soh) /* If item contains the 'soh' value */
 		{
-			j++; /* We want to double increment, so we don't catch the second '+' twice...*/
-			put_buff_3('^'); /* Putting a '^' into the buffer instead */
+			put_buff_3(item[0]); /* Pass it forward */
+			return NULL; /* Exit out of thread */
 		}
-		else put_buff_3(item[j]);
-	  }
+	  
+		else
+		{
+			for(int j = 0; j < strlen(item) - 1; j++)
+			{
+				if(item[j] == '+' && item[j+1] == '+') /* If current item[j] is a +, and the next one is aswell...*/
+				{
+					j++; /* We want to double increment, so we don't catch the second '+' twice...*/
+					put_buff_3('^'); /* Putting a '^' into the buffer instead */
+				}
+				else put_buff_3(item[j]);
+			}
+		}
     }
 	return NULL;
 }
@@ -98,6 +116,10 @@ void *write_output(void *args)
 	for(int i = 0; i < BUFFER_NUM_ITEMS * BUFFER_ITEM_SIZE; i++)
 	{
 		item[j] = get_buff_3();
+		
+		if(item[j] == soh)
+			return NULL;
+		
 		j++;
 		//printf("fakeOutput: %s, j==%i\n", item,j);
 		if(j == PRINT_LEN)

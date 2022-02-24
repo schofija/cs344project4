@@ -77,7 +77,8 @@ void put_buff_2(char* item)
 {
   pthread_mutex_lock(&mutex_2); // Lock the mutex before putting the item in the buffer
   
-  strcpy(buffer_2[prod_idx_2], item); // Put the item in the buffer
+	strcpy(buffer_2[prod_idx_2], item); // Put the item in the buffer
+
   prod_idx_2 += 1; // Increment the index where the next item will be put.
   count_2++;
   pthread_cond_signal(&full_2); // Signal to the consumer that the buffer is no longer empty

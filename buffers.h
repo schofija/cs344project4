@@ -16,6 +16,8 @@
 	#define PRINT_LEN 80
 #endif
 
+extern unsigned int stop_flag;
+
 /*
 NOTE: 
 Large portions of these functions use code taken from the example on the assignment page.
