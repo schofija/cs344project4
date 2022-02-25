@@ -16,21 +16,21 @@
 	#define PRINT_LEN 80
 #endif
 
-extern char buffer_1[BUFFER_NUM_ITEMS][BUFFER_ITEM_SIZE];
+extern char buffer_1[BUFFER_NUM_ITEMS + 1][BUFFER_ITEM_SIZE];
 extern int count_1;
 extern int prod_idx_1;
 extern int con_idx_1;
 extern pthread_mutex_t mutex_1;
 extern pthread_cond_t full_1;
 
-extern char buffer_2[BUFFER_NUM_ITEMS][BUFFER_ITEM_SIZE];
+extern char buffer_2[BUFFER_NUM_ITEMS + 1][BUFFER_ITEM_SIZE];
 extern int count_2;
 extern int prod_idx_2;
 extern int con_idx_2;
 extern pthread_mutex_t mutex_2;
 extern pthread_cond_t full_2;
 
-extern char buffer_3[BUFFER_NUM_ITEMS * BUFFER_ITEM_SIZE];
+extern char buffer_3[BUFFER_NUM_ITEMS * BUFFER_ITEM_SIZE + 1];
 extern int count_3;
 extern int prod_idx_3;
 extern int con_idx_3;

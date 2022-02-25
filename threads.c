@@ -47,6 +47,7 @@ void* get_input(void *args)
       put_buff_1(item);
     }
 	stop_flag = 1;
+	put_buff_1(stop_chr);
     return NULL;
 }
 
@@ -54,7 +55,7 @@ void* get_input(void *args)
 void *line_separator(void *args)
 {
     char* item;
-    for (int i = 0; i < BUFFER_NUM_ITEMS; i++) //for (int i = 0; i < BUFFER_NUM_ITEMS; i++)
+    for (int i = 0; i < BUFFER_NUM_ITEMS + 1; i++) //for (int i = 0; i < BUFFER_NUM_ITEMS; i++)
     {
 		item = get_buff_1();
 		
@@ -84,7 +85,7 @@ void *line_separator(void *args)
 void* plusplus_to_carrot(void* args)
 {
 	char* item;
-	for (int i = 0; i < BUFFER_NUM_ITEMS; i++)
+	for (int i = 0; i < BUFFER_NUM_ITEMS + 1; i++)
     {
       item = get_buff_2();
 	  

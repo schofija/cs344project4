@@ -14,7 +14,7 @@ contains put/get functions for each buffer
 
 /* Global variables for Buffer 1 */
 /* NOTE: These global variables were taken from the example code on the assignment page, and slightly modified */
-char buffer_1[BUFFER_NUM_ITEMS][BUFFER_ITEM_SIZE]; /* Buffer 1, shared resource between input thread line-separator thread */
+char buffer_1[BUFFER_NUM_ITEMS + 1][BUFFER_ITEM_SIZE]; /* Buffer 1, shared resource between input thread line-separator thread */
 int count_1 = 0; /* Number of items in the buffer */
 int prod_idx_1 = 0; /* Index where the input threaaad will put the next item */
 int con_idx_1 = 0; /* Index where line-separator thread will pick up the next item */
@@ -23,7 +23,7 @@ pthread_cond_t full_1 = PTHREAD_COND_INITIALIZER; /* Init condition variable for
 
 /* Global variables for Buffer 2 */
 /* NOTE: These global variables were taken from the example code on the assignment page, and slightly modified */
-char buffer_2[BUFFER_NUM_ITEMS][BUFFER_ITEM_SIZE]; /* Buffer 2, shared resource between square root thread and output thread */
+char buffer_2[BUFFER_NUM_ITEMS + 1][BUFFER_ITEM_SIZE]; /* Buffer 2, shared resource between square root thread and output thread */
 int count_2 = 0; /* Number of items in the buffer */
 int prod_idx_2 = 0; /* Index where the square-root thread will put the next item */
 int con_idx_2 = 0; /* Index where the output thread will pick up the next item */
@@ -32,7 +32,7 @@ pthread_cond_t full_2 = PTHREAD_COND_INITIALIZER; /* Initialize the condition va
 
 /* Global variables for Buffer 3 */
 /* NOTE: These global variables were taken from the example code on the assignment page, and slightly modified */
-char buffer_3[BUFFER_NUM_ITEMS * BUFFER_ITEM_SIZE]; /* Buffer 3*/
+char buffer_3[BUFFER_NUM_ITEMS * BUFFER_ITEM_SIZE + 1]; /* Buffer 3*/
 int count_3 = 0; /* Number of items in the buffer */
 int prod_idx_3 = 0; /* Index where the square-root thread will put the next item */
 int con_idx_3 = 0; /* Index where the output thread will pick up the next item */
