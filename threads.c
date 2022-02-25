@@ -54,8 +54,7 @@ void* get_input(void *args)
 void *line_separator(void *args)
 {
     char* item;
-	unsigned int max_idx = BUFFER_NUM_ITEMS;
-    for (int i = 0; i < max_idx; i++) //for (int i = 0; i < BUFFER_NUM_ITEMS; i++)
+    for (int i = 0; i < BUFFER_NUM_ITEMS; i++) //for (int i = 0; i < BUFFER_NUM_ITEMS; i++)
     {
 		item = get_buff_1();
 		
@@ -70,7 +69,10 @@ void *line_separator(void *args)
 			for(int j = 0; j < BUFFER_ITEM_SIZE; j++)
 			{
 			  if(item[j] == '\n') /* Converting newline character to space */
-				  item[j] == ' ';
+			  {
+				  char space = ' ';
+				  memmove(item + j, &space, 1);
+			  }
 			}
 			put_buff_2(item);
 		}
@@ -94,7 +96,7 @@ void* plusplus_to_carrot(void* args)
 	  
 		else
 		{
-			for(int j = 0; j < strlen(item) - 1; j++)
+			for(int j = 0; j < strlen(item); j++) /* "j < BUFFER_ITEM_SIZE" breaks program for some reason, so using strlen */
 			{
 				if(item[j] == '+' && item[j+1] == '+') /* If current item[j] is a +, and the next one is aswell...*/
 				{
@@ -124,7 +126,7 @@ void *write_output(void *args)
 		//printf("fakeOutput: %s, j==%i\n", item,j);
 		if(j == PRINT_LEN)
 		{
-			printf("Output: %.80s\n", item);
+			printf("%.80s\n", item);
 			j = 0;
 			memset(item, 0, PRINT_LEN);
 		}
